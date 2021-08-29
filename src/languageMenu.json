@@ -1,0 +1,15 @@
+[
+  {
+    "code": "hu",
+    "name": "Magyar"
+  },
+  {
+    "code": "de",
+    "name": "Deutsch"
+  },
+  {
+    "code": "en",
+    "name": "English",
+    "flag": "gb"
+  }
+]

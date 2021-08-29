@@ -1,0 +1,192 @@
+/* web view =============================================== */
+
+
+ul.submenu {
+  display: none;
+}
+li {
+  position:relative;
+  display:table;
+  height:100%;
+  margin: 0 0em;
+  cursor: pointer;
+}
+a, li.languageList section {
+  display: table-cell;
+  align-self: center;
+  vertical-align: middle;
+  text-decoration: none;
+  padding-left:  0.8em;
+  padding-right: 0.8em;
+  
+}
+li.languageList div {
+  display: inline-block;
+}
+
+
+/* -------- Sub-menu -------------------------------------------- */
+ul.submenu, .align-left ul.submenu, li.left ul.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: auto;
+  width: max-content;
+  background-color: var(--menuBgColor, #bdcece);
+  padding:0;
+  color: var(--menuFontColor, #111);
+}
+.align-center ul.submenu, li.center ul.submenu {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.align-right ul.submenu, li.right ul.submenu, li.auto:last-child ul.submenu {
+  left: unset;
+  transform: unset;
+  right: 0;
+}
+
+ul.submenu li {
+  margin: 0;
+  align-self: stretch;
+}
+ul.submenu li a, li.languageList ul.submenu li {
+  padding:  0.6em;
+  padding-left:  0.8em;
+  cursor: pointer;
+}
+li:hover ul, li.left:hover ul {
+  display: flex;
+}
+ul.submenu li:hover {
+  background-color: var(--menuBgColorHover, #cbe9e9);
+}
+ul.submenu li a:hover, li.languageList ul.submenu li:hover  {
+  color:         var(--menuFontColorHover,  #586868);
+}
+
+/* Language list  */
+li.languageList {
+  min-width:  unset;
+  font-family: unset;
+  font-size:  1em;
+  color: var(--titleFontColor, #111);
+  background-color:  var(--titleBgColor, unset);
+}
+li.languageList img {
+  margin: 0 0.4em 0 0;
+}
+
+li.languageList:hover {
+  color: var(--titleFontColorHover, initial);
+  background-color: var(--titleBgColorHover, initial) ;
+}
+
+/* ================= MOBILE VIEW ==================================== */
+/* @media only screen and (max-width: 800px) { */
+  menu.mobileView {display: none}
+  .menuIcon.mobileView {
+    display: flex;
+    position: absolute;
+    height: var(--menu-icon-height, 100%);
+    width: var(--menu-icon-width, calc(var(--menu-icon-height, 1em)*1.5));
+    flex-flow: column wrap;
+    padding: 0 calc(var(--menu-icon-height, 1em)/2);
+    cursor:pointer;
+  }
+  .menuIcon.mobileView div {
+    display: flex;
+    flex-flow: column;
+    margin: auto 0;
+  }
+  .menuIcon.mobileView span {
+    width: 100%;
+    height: calc(var(--menu-icon-height, 1em) / 3);
+    margin-bottom: calc(var(--menu-icon-height, 1em) / 6);
+    background-color: var(--menu-item-color, #111);
+  }
+  .menuIcon.mobileView:hover span{
+    background-color: var(--menu-item-color-selected, #e0ffff);
+  }
+  .menuIcon.mobileView:hover ~ menu, 
+  menu.mobileView ul li.submenu:hover menu, 
+  menu.mobileView:hover {
+    display: block
+  }
+  menu.mobileView, 
+  menu.mobileView.align-left, 
+  menu.mobileView.align-auto { 
+    position: relative;
+    top: 100%;
+    left: 0;
+    right: unset;
+    height: unset;
+    margin: 0;
+    height: fit-content;
+  }
+  menu.mobileView.align-right {
+    right: unset;
+    left: unset;
+    right: calc(var(--menu-icon-height, 1em)/ -2);
+  }
+  menu.mobileView ul {
+    display: block;
+    background-color: #ceffff;
+    height: unset;
+  }
+  menu.mobileView ul li {
+    display: flex;
+    cursor: pointer;
+  }
+  menu.mobileView ul li:has(ul) {
+    background-color: red;
+  }
+  /* CENTER alignment */
+  menu.mobileView.align-center ul li,
+  .menuBar.mobileView.align-center menu.align-auto ul li,
+  .menuBar.mobileView.align-center menu:not(.align-left):not(.align-right) ul li
+  {
+    display: block;
+  }
+  menu.mobileView.align-center li:hover ul.submenu,
+  .menuBar.mobileView.align-center menu.align-auto li:hover ul.submenu,
+  .menuBar.mobileView.align-center menu:not(.align-left):not(.align-right) li:hover ul.submenu
+  {
+    display: contents;
+  }
+
+  menu.mobileView ul li:hover a {
+    color: var(--menu-item-color-selected, #e0ffff);
+  }
+  menu.mobileView ul li a, 
+  ul.submenu li a, 
+  li.languageList ul.submenu li 
+  {
+    padding: var(--submenu-item-padding, 0.6em);
+    padding-left: calc(var(--submenu-left-padding, 0.2em) + var(--submenu-item-padding, 0.6em));
+  }
+
+  /* .menuBar:not(align-right) menu ul.submenu, menu.align-left ul.submenu, 
+  li.left ul.submenu, .menuBar.align-left li.auto ul.submenu, 
+  li.languageList.auto ul.submenu  */
+  .menuBar.mobileView.align-left menu ul.submenu,
+  .menuBar.mobileView menu.align-left ul.submenu,
+  .menuBar.mobileView.align-center menu.align-left ul.submenu,
+  .menuBar.mobileView.align-left li.languageList.auto ul.submenu
+  {
+    top: 0;
+    left: 100%;
+    right: unset;
+  }
+  /* menu.align-right ul.submenu, ul.submenu.right, 
+  .menuBar.align-right menu.auto ul.submenu { */
+  .menuBar.mobileView.align-right menu ul.submenu,
+  .menuBar.mobileView menu.align-right ul.submenu,
+  .menuBar.mobileView.align-center menu.align-right ul.submenu,
+  .menuBar.mobileView.align-right li.languageList.auto ul.submenu
+  {
+    top: unset;
+    left: unset;
+    right: 100%;
+  }
+/* } */

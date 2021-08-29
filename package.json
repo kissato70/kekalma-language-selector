@@ -1,0 +1,59 @@
+{
+	"name": "@kekalma/language-selector",
+	"version": "1.0.0",
+	"description": "library project",
+	"author": "kissato70",
+	"license": "MIT",
+	"repository": "kissato70/react-library_boilerplate",
+	"main": "dist/language-selector.js",
+	"module": "dist/language-selector.modern.js",
+	"source": "src/language-selector.tsx",
+	"engines": {
+		"node": ">=10"
+	},
+	"workspaces": [
+		"example"
+	],
+	"scripts": {
+		"start": "yarn install && node ./.bin/init.js && yarn install && yarn dist && yarn _predeploy && cd ..",
+		"dist": "microbundle-crl --compress --format modern,cjs",
+		"dev": "rollup --config rollup.config.dev.js -w",
+		"dev:microbundle": "microbundle-crl watch --no-compress --css inline --format modern,cjs",
+		"serve": "cd example && yarn serve",
+		"_predeploy": "cd example && yarn install && yarn run build && cd .."
+	},
+	"peerDependencies": {
+		"react": "^16.0.0"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^20.0.0",
+		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-node-resolve": "^13.0.4",
+		"@rollup/plugin-replace": "^3.0.0",
+		"@types/node": "^16.6.1",
+		"@types/react": "^17.0.18",
+		"@types/react-dom": "^17.0.9",
+		"@types/react-router-dom": "^5.1.8",
+		"microbundle-crl": "^0.13.11",
+		"postcss": "^8.3.6",
+		"postcss-import": "^14.0.2",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-scripts": "^4.0.3",
+		"rollup-plugin-cleaner": "^1.0.0",
+		"rollup-plugin-copy": "^3.4.0",
+		"rollup-plugin-livereload": "^2.0.5",
+		"rollup-plugin-peer-deps-external": "^2.2.4",
+		"rollup-plugin-postcss": "^4.0.1",
+		"rollup-plugin-serve": "^1.1.0",
+		"rollup-plugin-typescript2": "^0.30.0",
+		"typescript": "^4.3.5"
+	},
+	"files": [
+		"dist"
+	],
+	"dependencies": {
+		"national-flag-icons": "^1.0.1",
+		"react-router-dom": "^5.2.0"
+	}
+}

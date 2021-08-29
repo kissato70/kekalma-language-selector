@@ -1,0 +1,11 @@
+.yarn
+.yarn*
+/node_modules/
+/dist/
+
+/example/node_modules/
+/example/build/
+
+# Binary executables folder
+.bin/
+
