@@ -9,6 +9,12 @@ export type languageType = {
   flag?: string
 }
 
+export const emptyLanguage: languageType = {
+  code: "",
+  name: "",
+  flag: ""
+}
+
 export type languageContextType<T, F> = {
   language : T,
   setLanguage : (value: T) => void
@@ -16,13 +22,12 @@ export type languageContextType<T, F> = {
 
 export type languageProps = {
   languages: languageType[],
-  selectedLanguageCode?: string,
+  selectedLanguageFlag?: string,
   context: React.Context<languageContextType<languageType, ()=>{}>>,
   menuFormat?: string,
   titleFormat?: string,
   align?: "left" | "right" | "center" | "auto" | "center auto",
   format?: "dropdown" | "dropdown-ordered" | "flat" | "flat-reverse" | "linear" | "linear-ordered" | "horizontal" | "horizontal-reverse" ,
-  switchHandler?: Function,
   titleFont?: string,
   titleFontColor?: string,
   titleFontColorHover?: string,
@@ -59,16 +64,16 @@ export default function LanguageSelector(props: myProps) {
   const { language, setLanguage } = useContext(props.context)
 
   const languages = props.languages;
-  if (!props.selectedLanguageCode) {
-    props.selectedLanguageCode = languages[0].code;
+  if (!props.selectedLanguageFlag) {
+    props.selectedLanguageFlag = languages[0].flag || languages[0].code;
   }
   let selectedLang: languageType[] = languages.filter((lang: languageType) => {
-    return lang.code === props.selectedLanguageCode;
+    return lang.flag === props.selectedLanguageFlag || lang.code === props.selectedLanguageFlag ;
   });
 
   useEffect(() => {
     setLanguage(selectedLang[0])
-  }, [setLanguage, props.selectedLanguageCode])
+  }, [setLanguage, props.selectedLanguageFlag])
   
   const [selectedLanguage, setSelectedLanguage] = useState<myState["selectedLanguage"]>(selectedLang[0]);
 
@@ -86,11 +91,12 @@ export default function LanguageSelector(props: myProps) {
     let formatArray = formatString.split("|");
     let jsxArray: any[] = [];
     formatArray.map((f, fn) => {
-      if (f.toUpperCase() === "FLAG") {
-        let flagCode = langItem.flag as flagCodeType;
+      let flagCode = langItem.flag as flagCodeType;
+      if (f.toUpperCase() === "FLAG") {    
         jsxArray.push(<Flag key={keyString + "-flag" + fn.toString()} flagCode={flagCode} height={flagSize} />); return f;
       }
       if (f.toUpperCase() === "CODE") { jsxArray.push(<span key={keyString + "-langCode" + fn.toString()}>{langItem.code}</span>); return f; }
+      if (f.toUpperCase() === "FLAGCODE") { jsxArray.push(<span key={keyString + "-flagCode" + fn.toString()}>{langItem.flag}</span>); return f; }
       if (f.toUpperCase() === "NAME") { jsxArray.push(<span key={keyString + "-langName" + fn.toString()}>{langItem.name}</span>); return f; }
       if (f !== "") jsxArray.push(<span key={keyString + "-langSpan" + fn.toString()}>{f}</span>);
       return f;
@@ -113,7 +119,7 @@ export default function LanguageSelector(props: myProps) {
       ln_key,
       props.menuFlagSize || 14
     );
-    const selected = langItem.code === selectedLanguage.code ? "selected" : ""
+    const selected = langItem.flag === selectedLanguage.flag ? "selected" : ""
     let languageMenuItem =
       <div key={"lmenus_" + ln_key}>
         {lmi}
@@ -135,7 +141,7 @@ export default function LanguageSelector(props: myProps) {
   let menuFormatStyle: CSSProperties
   switch (props.format) {
     case "flat": menuFormatStyle = { flexFlow: "row" }; break;
-    case "flat-reverse": menuFormatStyle = { flexFlow: "row-reverse" }; break;
+    case "flat-reverse": menuFormatStyle = { flexFlow: "row-reverse", left: "initial", right: 0 }; break;
     case "horizontal": menuFormatStyle = { flexFlow: "row", top: 0 }; break;
     case "horizontal-reverse": menuFormatStyle = { flexFlow: "row-reverse", top: 0, left: "initial", right: 0 }; break;
     default: menuFormatStyle = { flexFlow: "column" };
