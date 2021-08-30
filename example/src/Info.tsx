@@ -6,7 +6,7 @@ export default function Info()
   const lang = useContext(languageContext)
   return (
     <React.Fragment>
-      <span style={{margin: "0 5px"}}>{lang.language.name}</span>
+      <span style={{margin: "0 5px"}}>Selected language: {lang.language.name}</span>
     </React.Fragment>
   )
 }

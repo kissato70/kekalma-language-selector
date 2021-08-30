@@ -5,22 +5,21 @@ import Info from './Info'
 
 const languages: languageType[] = [
   {
-    "code": "hu",
-    "name": "Magyar"
+    "code": "hu","name": "Hungarian"
   },
   {
-    "code": "de",
-    "name": "Deutsch"
+    "code": "de","name": "German"
   },
   {
-    "code": "en",
-    "name": "English",
-    "flag": "gb"
+    "code": "en","name": "English","flag": "gb"
+  },
+  {
+    "code": "fr","name": "French","flag": "fr"
+  },
+  {
+    "code": "es","name": "Spanish","flag": "es"
   }
 ]
-
-
-
 
 export default function App() {
   const emptyLanguage: languageType = {
@@ -36,14 +35,14 @@ export default function App() {
       <h1>This is an Example project for @kekalma/language-selector development</h1>
       <ul>
         <LanguageSelector
-          languages={languages}
-          selectedLanguageCode="hu"
-          context={languageContext}
-          menuFormat="|Flag| |Name| (|Code|)"
-          titleFormat="|Flag| |Name|"
-          format="linear"
-          align="left"
-            
+            languages={languages}
+            selectedLanguageCode="hu"
+            context={languageContext}
+            menuFormat="|Flag| |Name|"
+            titleFormat="|Flag| |Name|"
+            format="horizontal"
+            align="left"
+
         />
       </ul>
         <Info/>

@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useState } from "react";
+import React, { CSSProperties, useContext, useState, useEffect } from "react";
 import './Menu.css'
 import Flag from 'national-flag-icons';
 import type { flagCodeType } from "national-flag-icons";
@@ -21,7 +21,7 @@ export type languageProps = {
   menuFormat?: string,
   titleFormat?: string,
   align?: "left" | "right" | "center" | "auto" | "center auto",
-  format?: "dropdown" | "flat" | "flat-reverse" | "linear" | "linear-place",
+  format?: "dropdown" | "dropdown-ordered" | "flat" | "flat-reverse" | "linear" | "linear-ordered" | "horizontal" | "horizontal-reverse" ,
   switchHandler?: Function,
   titleFont?: string,
   titleFontColor?: string,
@@ -32,9 +32,12 @@ export type languageProps = {
   menuFont?: string,
   menuFontColor?: string,
   menuFontColorHover?: string,
+  menuFontColorSelected?: string,
   menuBgColor?: string,
   menuBgColorHover?: string,
+  menuBgColorSelected?: string,
   menuFlagSize?: number,
+  menuStyleSelected?: CSSProperties,
   titleStyle?: CSSProperties,
   menuStyle?: CSSProperties,
   style?: CSSProperties
@@ -53,6 +56,8 @@ type myProps = languageProps &
 
 // =====================================================================================
 export default function LanguageSelector(props: myProps) {
+  const { language, setLanguage } = useContext(props.context)
+
   const languages = props.languages;
   if (!props.selectedLanguageCode) {
     props.selectedLanguageCode = languages[0].code;
@@ -60,11 +65,16 @@ export default function LanguageSelector(props: myProps) {
   let selectedLang: languageType[] = languages.filter((lang: languageType) => {
     return lang.code === props.selectedLanguageCode;
   });
+
+  useEffect(() => {
+    setLanguage(selectedLang[0])
+  }, [setLanguage, props.selectedLanguageCode])
   
   const [selectedLanguage, setSelectedLanguage] = useState<myState["selectedLanguage"]>(selectedLang[0]);
 
   const languageChange = (newLanguage: languageType) => {
     let oldLanguage = selectedLanguage;
+    setLanguage(newLanguage)
     setSelectedLanguage(newLanguage);
     if (props.onLanguageChange && newLanguage !== oldLanguage) {
       props.onLanguageChange(newLanguage, oldLanguage);
@@ -94,25 +104,40 @@ export default function LanguageSelector(props: myProps) {
     "selectedLanguage",
     props.titleFlagSize || 14
   );
-  const langMenus = languages.map((langItem: languageType, ln) => {
-    let lns = "languageMenus" + ln.toString();
+  let orderedList: Array<JSX.Element> = []
+  let languageList = languages.map((langItem: languageType, ln) => {
+    let ln_key = "LM" + ln.toString();
     let lmi = menuItemFormatter(
       props.menuFormat || "|Flag| |Name| (|Code|)",
       langItem,
-      lns,
+      ln_key,
       props.menuFlagSize || 14
     );
+    const selected = langItem.code === selectedLanguage.code ? "selected" : ""
     let languageMenuItem =
-      <div key={"lmenus" + lns}>
+      <div key={"lmenus_" + ln_key}>
         {lmi}
       </div>;
-    return <li key={"langMenuItems" + lns} onClick={() => languageChange(langItem)}>{languageMenuItem}</li>;
+    const selectedStyle = langItem.code === selectedLanguage.code ? props.menuStyleSelected : {}
+    const item = <li key={"langMenuItems_" + ln_key} onClick={() => languageChange(langItem)} className={selected} style={{ ...selectedStyle }} >{languageMenuItem}</li>;
+    if (selected === "selected") {
+      orderedList = Array(item).concat(orderedList)
+    } else {
+      orderedList.push(item)
+    }
+    if (props.format && props.format.split("-")[1] === "ordered" && selected === "selected") {
+      return null
+    } else {
+      return item
+    }
   });
 
   let menuFormatStyle: CSSProperties
   switch (props.format) {
     case "flat": menuFormatStyle = { flexFlow: "row" }; break;
     case "flat-reverse": menuFormatStyle = { flexFlow: "row-reverse" }; break;
+    case "horizontal": menuFormatStyle = { flexFlow: "row", top: 0 }; break;
+    case "horizontal-reverse": menuFormatStyle = { flexFlow: "row-reverse", top: 0, left: "initial", right: 0 }; break;
     default: menuFormatStyle = { flexFlow: "column" };
   }
 
@@ -136,15 +161,21 @@ export default function LanguageSelector(props: myProps) {
     font: props.menuFont || "initial",
     "--menuFontColor": `${props.menuFontColor || ""}`,
     "--menuFontColorHover": `${props.menuFontColorHover || ""}`,
+    "--menuFontColorSelected": `${props.menuFontColorSelected || ""}`,
     "--menuBgColor": `${props.menuBgColor || ""}`,
-    "--menuBgColorHover": `${props.menuBgColorHover || ""}`
+    "--menuBgColorHover": `${props.menuBgColorHover || ""}`,
+    "--menuBgColorSelected": `${props.menuBgColorSelected || ""}`
+  }
+
+  if (props.format && (props.format === "linear-ordered" || props.format.split("-")[0] === "horizontal")) {
+    languageList = orderedList
   }
 
   return (
     <React.Fragment>
       <li key={"languagelist"} className={"languageList " + props.align || "left"} style={{ ...titleStyle, ...props.style }}>
         <section style={{ ...props.titleStyle, ...titleVisible}}>{selectedLanguageTitle}</section>
-        <ul className={"submenu"} style={{ ...menuFormatStyle,...menuStyle, ...props.menuStyle, ...menuVisible  }}>{langMenus}</ul>
+        <ul className={"submenu"} style={{ ...menuFormatStyle,...menuStyle, ...props.menuStyle, ...menuVisible  }}>{languageList}</ul>
       </li>
     </React.Fragment>
   );

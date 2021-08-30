@@ -36,7 +36,7 @@ export default {
     livereload({
       watch: 'src',
       verbose: true,
-      delay: 1000
+      delay: 1500
     })
   ],
 };

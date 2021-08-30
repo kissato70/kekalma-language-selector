@@ -10,14 +10,16 @@ li {
   height:100%;
   margin: 0 0em;
   cursor: pointer;
+  padding:  0.6em;
+  padding-left:  0.8em;
+  margin: 0;
+  align-self: stretch;
 }
 a, li.languageList section {
   display: table-cell;
   align-self: center;
   vertical-align: middle;
   text-decoration: none;
-  padding-left:  0.8em;
-  padding-right: 0.8em;
   
 }
 li.languageList div {
@@ -80,6 +82,12 @@ li.languageList img {
 li.languageList:hover {
   color: var(--titleFontColorHover, initial);
   background-color: var(--titleBgColorHover, initial) ;
+}
+
+li.selected, li.selected:hover {
+  
+  color: var(--menuFontColorSelected, initial);
+  background-color: var(--menuBgColorSelected, #adbebe);
 }
 
 /* ================= MOBILE VIEW ==================================== */
