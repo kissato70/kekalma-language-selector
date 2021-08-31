@@ -98,7 +98,7 @@ export default function Info()
 }
 ```
 _The currently selected value is stored in the following format (`languageType`):_
-```JSON
+```text
 {
   code: string,   // ISO language code (2 chars)
   name: string,   // Language name
