@@ -4,9 +4,12 @@
 	"description": "library project",
 	"author": "kissato70",
 	"license": "MIT",
-	"repository": "kissato70/react-library_boilerplate",
+	"funding": {
+		"type": "individual",
+		"url": "https://bit.ly/kissato70_paypal_donate"
+	},
+	"repository": "kissato70/kekalma-language-selector",
 	"main": "dist/language-selector.js",
-	"module": "dist/language-selector.modern.js",
 	"source": "src/language-selector.tsx",
 	"engines": {
 		"node": ">=10"
@@ -14,11 +17,21 @@
 	"workspaces": [
 		"example"
 	],
+	"keywords": [
+		"react",
+		"language",
+		"dropdown",
+		"selector",
+		"component",
+		"multi-language",
+		"typescript"
+	],
 	"scripts": {
 		"start": "yarn install && node ./.bin/init.js && yarn install && yarn dist && yarn _predeploy && cd ..",
-		"dist": "microbundle-crl --compress --format modern,cjs",
 		"dev": "rollup --config rollup.config.dev.js -w",
+		"dist": "rollup --config rollup.config.dist.js",
 		"dev:microbundle": "microbundle-crl watch --no-compress --css inline --format modern,cjs",
+		"dist:microbundle": "microbundle-crl --compress --format modern,cjs",
 		"serve": "cd example && yarn serve",
 		"_predeploy": "cd example && yarn install && yarn run build && cd .."
 	},
@@ -46,6 +59,7 @@
 		"rollup-plugin-peer-deps-external": "^2.2.4",
 		"rollup-plugin-postcss": "^4.0.1",
 		"rollup-plugin-serve": "^1.1.0",
+		"rollup-plugin-terser": "^7.0.2",
 		"rollup-plugin-typescript2": "^0.30.0",
 		"typescript": "^4.3.5"
 	},
