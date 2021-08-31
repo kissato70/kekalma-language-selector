@@ -18,10 +18,7 @@ export default function App() {
           languages={languages}
           selectedLanguageFlag="hu"
           context={languageContext}
-          
-          
           onLanguageChange={switchHandler}
-          style={{marginLeft:"500px"}}
       />
     </ul>
       
