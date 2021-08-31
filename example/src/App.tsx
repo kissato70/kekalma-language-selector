@@ -18,11 +18,10 @@ export default function App() {
           languages={languages}
           selectedLanguageFlag="hu"
           context={languageContext}
-          titleFormat="|Flag| |Name|"
-          menuFormat="|Flag| |Name|"
-          format="dropdown-ordered"
-          align="left"
+          
+          
           onLanguageChange={switchHandler}
+          style={{marginLeft:"500px"}}
       />
     </ul>
       

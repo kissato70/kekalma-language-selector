@@ -114,7 +114,7 @@ export default function LanguageSelector(props: myProps) {
   let languageList = languages.map((langItem: languageType, ln) => {
     let ln_key = "LM" + ln.toString();
     let lmi = menuItemFormatter(
-      props.menuFormat || "|Flag| |Name| (|Code|)",
+      props.menuFormat || "|Flag| |Name|",
       langItem,
       ln_key,
       props.menuFlagSize || 14

@@ -4,7 +4,10 @@ A flexible language selector component for React, where you can change the forma
 
 ## Usage examples
 
-The following code example demonstrates the use of the language selector, with separate context values and handler functions.
+The following simple code example demonstrates the use of the language selector, with separate context values and a (optional) handler function.
+
+![simple](./example_images/simple.jpg)
+
 <br>  
 
 
@@ -19,18 +22,18 @@ import { languages } from './languageList'
 
 export default function App() {
   const [selectedLanguage, setSelectedLanguage] = useState(emptyLanguage);
+  const switchHandler = (newLang: languageType, oldLang: languageType) => {
+    console.log("The language has been changed: ", oldLang.name, " -> ", newLang.flag)
+  }
   return (
     <languageContext.Provider value={{language: selectedLanguage, setLanguage: setSelectedLanguage}}>
     // can be placed into an 'ul' element as it produces a list item
     <ul>
       <LanguageSelector
           languages={languages}
-          selectedLanguageCode="hu"
+          selectedLanguageCode="hu"   
           context={languageContext}
-          menuFormat="|Flag| |Name|"
-          titleFormat="|Flag| |Name|"
-          format="horizontal"
-          align="left"
+          onLanguageChange={switchHandler}
       />
     </ul>
       <Info/>
@@ -56,7 +59,7 @@ export const languages: languageType[] = [
 ]
 ```  
 
-*Note the use of the 'flag' property. It is only necessary, if the same language may be used with a different flag from country to country. The `flag` is the key, it should be unique!*
+*Note the use of the 'flag' property. It is only necessary, if the same language may be used with a different flag from country to country. The `flag` is the ___key___, it should be unique!*
 
 <br>
 
@@ -75,7 +78,9 @@ export const languageContext = createContext<languageContextType<languageType, (
 
 <br>
 
-__info.tsx__
+__info.tsx__  
+
+_In this component you get an example, how to use the value from the context._
 
 ```tsx
 import React, {useContext} from 'react'
@@ -87,12 +92,19 @@ export default function Info()
   return (
     <span>
       Selected language: 
-      {lang.language.name} ({lang.language.code}/{lang.language.flag})
+      {lang.language.name} ({lang.language.code}_{lang.language.flag})
     </span>
   )
 }
 ```
-
+_The currently selected value is stored in the following format (`languageType`):_
+```JSON
+{
+  code: string,   // ISO language code (2 chars)
+  name: string,   // Language name
+  flag: string    // Flag code (2 chars)
+}
+```
 <br>
 
 ## Property parameters
@@ -130,9 +142,9 @@ _(Only the ___bold___ properties are obligatory, all others are optional.)_
 
 <br>
 
-## __Format examples__
+## __Format examples with property code samples__
 
-### __dropdown:__
+### __`dropdown:`__
 
 ![Dropdown](./example_images/dropdown.jpg)
 
@@ -145,7 +157,7 @@ align="left"
 
 <br>
 
-### __dropdown-ordered:__
+### __`dropdown-ordered:`__
 
 ![dropdown-ordered](./example_images/dropdown-ordered.jpg)
 
@@ -155,3 +167,54 @@ menuFormat="|Flag| |Name|"
 format="dropdown-ordered"
 ```
 
+<br>
+
+### __`flat:`__
+
+![dropdown-ordered](./example_images/flat.jpg)
+
+```JSON
+titleFormat="|Flag| |Name|"
+menuFormat="|Flag| |Name|"
+format="flat"
+```
+
+![dropdown-ordered](./example_images/flat_right.jpg)
+
+```JSON
+titleFormat="|Flag| |Name|"
+menuFormat="|Flag| |Name|"
+format="flat-reverse"
+align="right"
+```
+
+![dropdown-ordered](./example_images/flat_center.jpg)
+
+```JSON
+titleFormat="|Flag| |Name|"
+menuFormat="|Flag| |Name|"
+format="flat"
+align="center"
+```
+
+<br>
+
+### __`linear:`__
+
+![dropdown-ordered](./example_images/linear.jpg)
+
+```JSON
+titleFormat="|Flag| |Name|"
+menuFormat="|Flag| |Name|"
+format="linear-ordered"
+```
+
+<br>
+
+## License
+
+MIT © [kissato70](https://github.com/kissato70)
+
+<br>  
+
+### Support the project >>> [Donation](https://bit.ly/kissato70_paypal_donate)
