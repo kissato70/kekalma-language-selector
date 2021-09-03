@@ -15,15 +15,15 @@ export const emptyLanguage: languageType = {
   flag: ""
 }
 
-export type languageContextType<T, F> = {
-  language : T,
-  setLanguage : (value: T) => void
+export type languageContextType = {
+  language : languageType,
+  setLanguage : (value: languageType) => void
 }
 
 export type languageProps = {
   languages: languageType[],
   selectedLanguageFlag?: string,
-  context: React.Context<languageContextType<languageType, ()=>{}>>,
+  context: React.Context<languageContextType>,
   menuFormat?: string,
   titleFormat?: string,
   align?: "left" | "right" | "center" | "auto" | "center auto",

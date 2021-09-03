@@ -70,7 +70,7 @@ import React, {createContext} from 'react'
 import type {languageType, languageContextType } from '@kekalma/language-selector'
 import {emptyLanguage } from '@kekalma/language-selector'
 
-export const languageContext = createContext<languageContextType<languageType, () => {}>>({
+export const languageContext = createContext<languageContextType>({
   language: emptyLanguage,
   setLanguage: (value: languageType):void =>{}
 })
