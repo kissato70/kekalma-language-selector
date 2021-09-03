@@ -60,7 +60,7 @@ type myProps = languageProps &
 
 
 // =====================================================================================
-export default function LanguageSelector(props: myProps) {
+export function LanguageSelector(props: myProps) {
   const { language, setLanguage } = useContext(props.context)
 
   const languages = props.languages;

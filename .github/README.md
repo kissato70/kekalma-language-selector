@@ -15,13 +15,13 @@ __App.tsx__
 
 ```tsx
 import React,{useState} from 'react'
-import LanguageSelector, {emptyLanguage} from '@kekalma/language-selector'
+import {LanguageSelector as Language, emptyLanguage} from '@kekalma/language-selector'
 import { languageContext } from './context'
 import Info from './Info'
 import { languages } from './languageList'
 
 export default function App() {
-  const [selectedLanguage, setSelectedLanguage] = useState(emptyLanguage);
+  const [selectedLanguage, setSelectedLanguage] = useState<languageType>(emptyLanguage);
   const switchHandler = (newLang: languageType, oldLang: languageType) => {
     console.log("The language has been changed: ", oldLang.name, " -> ", newLang.flag)
   }
@@ -29,7 +29,7 @@ export default function App() {
     <languageContext.Provider value={{language: selectedLanguage, setLanguage: setSelectedLanguage}}>
     // can be placed into an 'ul' element as it produces a list item
     <ul>
-      <LanguageSelector
+      <Language
           languages={languages}
           selectedLanguageCode="hu"   
           context={languageContext}
