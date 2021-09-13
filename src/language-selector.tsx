@@ -45,22 +45,17 @@ export type languageProps = {
   menuStyleSelected?: CSSProperties,
   titleStyle?: CSSProperties,
   menuStyle?: CSSProperties,
-  style?: CSSProperties
+  style?: CSSProperties,
+  onLanguageChange?: Function
 }
 type myState = {
   selectedLanguage: languageType,
   languages: languageType[]
 }
 
-type myProps = languageProps &
-{
-  onLanguageChange?: Function,
-  languages: languageType[]   // Overloaded. Reason: it is not optional here!
-};
-
 
 // =====================================================================================
-export function LanguageSelector(props: myProps) {
+export function LanguageSelector(props: languageProps) {
   const { language, setLanguage } = useContext(props.context)
 
   const languages = props.languages;

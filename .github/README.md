@@ -142,6 +142,16 @@ _(Only the ___bold___ properties are obligatory, all others are optional.)_
 
 <br>
 
+## __Exported type definitions (Typescript)__
+
+|exported item|Description|
+|---|---|
+|languageProps|All the properties listed above|
+|languageContextType|Context type definition|
+|languageType|Type holding the language properties: code, name, flag|
+
+<br>
+
 ## __Format examples with property code samples__
 
 ### __`dropdown:`__

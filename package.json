@@ -1,6 +1,6 @@
 {
 	"name": "@kekalma/language-selector",
-	"version": "0.0.4",
+	"version": "0.0.6",
 	"description": "Language selector component for React",
 	"author": "kissato70",
 	"license": "MIT",
@@ -69,5 +69,9 @@
 	"dependencies": {
 		"national-flag-icons": "^1.0.1",
 		"react-router-dom": "^5.2.0"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org"
 	}
 }
