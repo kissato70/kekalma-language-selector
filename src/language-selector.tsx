@@ -17,7 +17,7 @@ export const emptyLanguage: languageType = {
 
 export type languageContextType = {
   language : languageType,
-  setLanguage : (value: languageType) => void
+  setLanguage : (T: languageType) => void
 }
 
 export type languageProps = {
@@ -46,7 +46,7 @@ export type languageProps = {
   titleStyle?: CSSProperties,
   menuStyle?: CSSProperties,
   style?: CSSProperties,
-  onLanguageChange?: Function
+  onLanguageChange?: (N: languageType, O: languageType)=>{}
 }
 type myState = {
   selectedLanguage: languageType,
