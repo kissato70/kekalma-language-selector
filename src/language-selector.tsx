@@ -46,7 +46,7 @@ export type languageProps = {
   titleStyle?: CSSProperties,
   menuStyle?: CSSProperties,
   style?: CSSProperties,
-  onLanguageChange?: (N: languageType, O: languageType)=>{}
+  onLanguageChange?: (N: languageType, O: languageType) => void
 }
 type myState = {
   selectedLanguage: languageType,
