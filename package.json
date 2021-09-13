@@ -1,6 +1,6 @@
 {
 	"name": "@kekalma/language-selector",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"description": "Language selector component for React",
 	"author": "kissato70",
 	"license": "MIT",
