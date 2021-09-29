@@ -23,7 +23,8 @@ export type languageContextType = {
 export type languageProps = {
   languages: languageType[],
   selectedLanguageFlag?: string,
-  context: React.Context<languageContextType>,
+  context?: React.Context<languageContextType>,
+  onLanguageChange?: (N: languageType, O: languageType) => void,
   menuFormat?: string,
   titleFormat?: string,
   align?: "left" | "right" | "center" | "auto" | "center auto",
@@ -45,8 +46,7 @@ export type languageProps = {
   menuStyleSelected?: CSSProperties,
   titleStyle?: CSSProperties,
   menuStyle?: CSSProperties,
-  style?: CSSProperties,
-  onLanguageChange?: (N: languageType, O: languageType) => void
+  style?: CSSProperties
 }
 type myState = {
   selectedLanguage: languageType,
@@ -56,52 +56,56 @@ type myState = {
 
 // =====================================================================================
 export function LanguageSelector(props: languageProps) {
-  const { language, setLanguage } = useContext(props.context)
-
-  const languages = props.languages;
-  if (!props.selectedLanguageFlag) {
-    props.selectedLanguageFlag = languages[0].flag || languages[0].code;
+  let [_language, _setLanguage] = useState(emptyLanguage)
+  let setLanguage: languageContextType['setLanguage']
+  if (props.context) {
+    ({ setLanguage } = useContext(props.context))
   }
-  let selectedLang: languageType[] = languages.filter((lang: languageType) => {
-    return lang.flag === props.selectedLanguageFlag || lang.code === props.selectedLanguageFlag ;
-  });
+  const languages = props.languages;
+
+  const getLanguageByFlag = (flag : string): languageType => {
+    let lang: languageType = languages.filter((lang: languageType) => {
+      return lang.flag === props.selectedLanguageFlag || lang.code === props.selectedLanguageFlag ;
+    })[0] || emptyLanguage
+    return lang
+  }
 
   useEffect(() => {
-    setLanguage(selectedLang[0])
-  }, [setLanguage, props.selectedLanguageFlag])
-  
-  const [selectedLanguage, setSelectedLanguage] = useState<myState["selectedLanguage"]>(selectedLang[0]);
+    const initLang = getLanguageByFlag(props.selectedLanguageFlag || props.languages[0].flag || "")
+    if (props.selectedLanguageFlag) _setLanguage(initLang)
+    if (props.context && props.selectedLanguageFlag) setLanguage(initLang)
+  }, [ props.selectedLanguageFlag ])
 
-  const languageChange = (newLanguage: languageType) => {
-    let oldLanguage = selectedLanguage;
-    setLanguage(newLanguage)
-    setSelectedLanguage(newLanguage);
-    if (props.onLanguageChange && newLanguage !== oldLanguage) {
-      props.onLanguageChange(newLanguage, oldLanguage);
-    }
+  const changeHandler = (newLanguage: languageType) => {
+    let oldLanguage = _language;
+    _setLanguage(newLanguage)
+    if (props.context )setLanguage(newLanguage)
+    if (props.onLanguageChange && newLanguage !== oldLanguage) props.onLanguageChange(newLanguage, oldLanguage)
   }
 
   const menuItemFormatter = (formatString: string, langItem: languageType, keyString: string, flagSize: number) => {
     if (langItem.flag === undefined) langItem.flag = langItem.code;
     let formatArray = formatString.split("|");
-    let jsxArray: any[] = [];
-    formatArray.map((f, fn) => {
-      let flagCode = langItem.flag as flagCodeType;
-      if (f.toUpperCase() === "FLAG") {    
-        jsxArray.push(<Flag key={keyString + "-flag" + fn.toString()} flagCode={flagCode} height={flagSize} />); return f;
-      }
-      if (f.toUpperCase() === "CODE") { jsxArray.push(<span key={keyString + "-langCode" + fn.toString()}>{langItem.code}</span>); return f; }
-      if (f.toUpperCase() === "FLAGCODE") { jsxArray.push(<span key={keyString + "-flagCode" + fn.toString()}>{langItem.flag}</span>); return f; }
-      if (f.toUpperCase() === "NAME") { jsxArray.push(<span key={keyString + "-langName" + fn.toString()}>{langItem.name}</span>); return f; }
-      if (f !== "") jsxArray.push(<span key={keyString + "-langSpan" + fn.toString()}>{f}</span>);
-      return f;
-    });
+    let jsxArray: JSX.Element[] = [];
+    if (langItem.flag) {
+      formatArray.map((f, fn) => {
+        let flagCode = langItem.flag as flagCodeType || langItem.code as flagCodeType
+        if (f.toUpperCase() === "FLAG") {
+          jsxArray.push(<Flag key={keyString + "-flag" + fn.toString()} flagCode={flagCode} height={flagSize} />); return f;
+        }
+        if (f.toUpperCase() === "CODE") { jsxArray.push(<span key={keyString + "-langCode" + fn.toString()}>{langItem.code}</span>); return f; }
+        if (f.toUpperCase() === "FLAGCODE") { jsxArray.push(<span key={keyString + "-flagCode" + fn.toString()}>{langItem.flag}</span>); return f; }
+        if (f.toUpperCase() === "NAME") { jsxArray.push(<span key={keyString + "-langName" + fn.toString()}>{langItem.name}</span>); return f; }
+        if (f !== "") jsxArray.push(<span key={keyString + "-langSpan" + fn.toString()}>{f}</span>);
+        return f;
+      });
+    }
     return jsxArray;
   }
 
   const selectedLanguageTitle = menuItemFormatter(
     props.titleFormat || props.menuFormat || "|Flag|",
-    selectedLanguage,
+    _language,
     "selectedLanguage",
     props.titleFlagSize || 14
   );
@@ -114,13 +118,13 @@ export function LanguageSelector(props: languageProps) {
       ln_key,
       props.menuFlagSize || 14
     );
-    const selected = langItem.flag === selectedLanguage.flag ? "selected" : ""
+    const selected = langItem.flag === _language.flag ? "selected" : ""
     let languageMenuItem =
       <div key={"lmenus_" + ln_key}>
         {lmi}
       </div>;
-    const selectedStyle = langItem.code === selectedLanguage.code ? props.menuStyleSelected : {}
-    const item = <li key={"langMenuItems_" + ln_key} onClick={() => languageChange(langItem)} className={selected} style={{ ...selectedStyle }} >{languageMenuItem}</li>;
+    const selectedStyle = langItem.code === _language.code ? props.menuStyleSelected : {}
+    const item = <li key={"langMenuItems_" + ln_key} onClick={() => changeHandler(langItem)} className={selected} style={{ ...selectedStyle }} >{languageMenuItem}</li>;
     if (selected === "selected") {
       orderedList = Array(item).concat(orderedList)
     } else {
