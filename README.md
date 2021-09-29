@@ -120,7 +120,7 @@ _Only the ___bold___ properties are obligatory, all others are optional, but you
 |property|format|Description|
 |---|:---:|---|
 |__languages__|languageType[ ]|__(Required)__ The JSON list of the languages, defined in the example file above.|
-|selectedLanguageFlag|string|The initialy selected language. Default: first item.|
+|selectedLanguageFlag|flagCodeType|The initialy selected language. Default: first item.<br>`flagCodeType`: The string literal values of useable flag codes.|
 | context| React.Context<br>\<languageContextType> | Required. The context, to store the state and the handler. See the above example for the format. |
 |onLanguageChange|Function<br>(newLanguage: languageType, oldLanguage: languageType)|The callback function for the change event. It is called with two parameters, holding the new and the old language objects. |
 |titleFormat|string|A definition of the freely formatted label text, put together with `\|Flag\|` `\|Name\|` `\|Code\|` `\|FlagCode\|` placeholder, where `Flag` represents the flag icon.|
@@ -148,19 +148,21 @@ _Only the ___bold___ properties are obligatory, all others are optional, but you
 
 <br>
 
-## __Exported type definitions (Typescript)__
+## __`Exported items:`__
 
-|exported item|Description|
-|---|---|
-|languageProps|All the properties listed above.|
-|languageContextType|Context type definition.|
-|languageType|Type holding the language properties: code, name, flag.|
-|emptyLanguage|The type `languageType` with empty values.|
+|exported item|type|description|
+|---|---|---|
+|languageProps|type|All the properties listed above.|
+|languageContextType|type|Context type definition.|
+|languageType|type|Type holding the language properties: code, name, flag.|
+|flagCodeType|type|The string literal values of useable flag codes.|
+|emptyLanguage|object|The type `languageType` with empty values.|
+|getLanguageByCode|function|__Usage__: getLanguageByCode(languages: languageType[], code: flagCodeType): languageType<br>__Input__: Use the array from `props.languages` and the 2 character language or flag `ISO code` as `flagCodeType`.<br>__Return__: An object of type `languageType` or if the code is not found, the `emptyLanguage`.|
 
 
 <br>
 
-## __Format examples with property code samples__
+## __`Format examples with property code samples:`__
 
 ### __`dropdown:`__
 
@@ -235,6 +237,7 @@ format="linear-ordered"
 |Version|What's new, description|
 |:---:|:---|
 |1.0.0|First official, working release.|
+|1.0.1|Exporting the function `getLanguageByCode` and the type `flagCodeType`|
 
 <br>
 

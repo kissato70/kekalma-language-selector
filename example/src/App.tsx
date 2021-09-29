@@ -17,7 +17,7 @@ export default function App() {
       <ul>
         <Language
             languages={languages}
-            selectedLanguageFlag="hu"
+            selectedLanguageFlag="us"
             context={languageContext}
             onLanguageChange={changeHandler}
         />

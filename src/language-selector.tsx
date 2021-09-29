@@ -9,6 +9,8 @@ export type languageType = {
   flag?: string
 }
 
+export type { flagCodeType }
+
 export const emptyLanguage: languageType = {
   code: "",
   name: "",
@@ -22,7 +24,7 @@ export type languageContextType = {
 
 export type languageProps = {
   languages: languageType[],
-  selectedLanguageFlag?: string,
+  selectedLanguageFlag?: flagCodeType,
   context?: React.Context<languageContextType>,
   onLanguageChange?: (N: languageType, O: languageType) => void,
   menuFormat?: string,
@@ -53,6 +55,11 @@ type myState = {
   languages: languageType[]
 }
 
+export function  getLanguageByCode (languages: languageType[], code : flagCodeType): languageType { 
+  let selectedLanguage = languages.filter((language) => (language.flag === code as string || language.code === code as string))
+  return selectedLanguage[0] || emptyLanguage
+}
+
 
 // =====================================================================================
 export function LanguageSelector(props: languageProps) {
@@ -63,18 +70,13 @@ export function LanguageSelector(props: languageProps) {
   }
   const languages = props.languages;
 
-  const getLanguageByFlag = (flag : string): languageType => {
-    let lang: languageType = languages.filter((lang: languageType) => {
-      return lang.flag === props.selectedLanguageFlag || lang.code === props.selectedLanguageFlag ;
-    })[0] || emptyLanguage
-    return lang
-  }
+  
 
   useEffect(() => {
-    const initLang = getLanguageByFlag(props.selectedLanguageFlag || props.languages[0].flag || "")
-    if (props.selectedLanguageFlag) _setLanguage(initLang)
-    if (props.context && props.selectedLanguageFlag) setLanguage(initLang)
-  }, [ props.selectedLanguageFlag ])
+    const initLang = getLanguageByCode(props.languages, props.selectedLanguageFlag as flagCodeType || props.languages[0].flag as flagCodeType || props.languages[0].code as flagCodeType)
+    _setLanguage(initLang)
+    if (props.context) setLanguage(initLang)
+  }, [props.selectedLanguageFlag])
 
   const changeHandler = (newLanguage: languageType) => {
     let oldLanguage = _language;
